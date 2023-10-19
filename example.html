@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>watchRTC integration example</title>
+  </head>
+  <body>
+    <!-- Create an iframe element to embed watchRTC content -->
+    <iframe id="watchrtc-iframe" src="" style="width: 800px; height: 600px"></iframe>
+
+    <script>
+      "use strict";
+
+      // Get a reference to the iframe element by its ID
+      const iframeElement = document.getElementById("watchrtc-iframe");
+
+      // Define the origin of the watchRTC frame
+      const frameOrigin = "https://app.testrtc.com";
+      // Use https://app.testrtc.com/frame/ instead of https://app.testrtc.com/app/ when embedding pages
+      const frameSrc = `${frameOrigin}/frame/PAGE-PATH`;
+      const apiKey = "YOUR-WATCHRTC-API-KEY";
+
+      let intervalId;
+
+      // Send a message with an API key to the iframe repeatedly to ensure it receives it after loading
+      iframeElement.addEventListener("load", (event) => {
+        if (frameSrc && apiKey) {
+          // Set up an interval to send the API key
+          intervalId = setInterval(() => {
+            iframeElement?.contentWindow?.postMessage({ apiKey: apiKey }, frameOrigin);
+          }, 100);
+        }
+      });
+
+      // Receive a message from the iframe indicating if the initialization was successful
+      window.addEventListener("message", (event) => {
+        if (event.origin === frameOrigin && typeof event.data?.isSuccess === "boolean") {
+          // If a successful message is received, clear the interval
+          clearInterval(intervalId);
+        }
+      });
+
+      // Set the iframe's src attribute only after adding event listeners to ensure they run properly
+      iframeElement.setAttribute("src", frameSrc);
+    </script>
+  </body>
+</html>
