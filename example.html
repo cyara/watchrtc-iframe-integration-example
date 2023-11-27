@@ -18,7 +18,19 @@
 
       // Define the origin of the watchRTC frame
       const frameOrigin = "https://app.testrtc.com";
-      // Use https://app.testrtc.com/frame/ instead of https://app.testrtc.com/app/ when embedding pages
+      /* 
+        Use https://app.testrtc.com/frame/ instead of https://app.testrtc.com/app/ when embedding pages
+
+        PAGE-PATH variants:
+        - room page - /frame/watchrtc/history/room
+        - peer page - /frame/watchrtc/history/peer
+        - peer trace page - /frame/watchrtc/history/peer/trace
+        - peer advanced analytics page - /frame/logs/webrtc-internals-watch-rtc/{%fileName%}/{%dumpUrl%}
+
+        QUERY-PARAMETERS variants:
+        - room page - room={%roomId%}
+        - all peer-related pages - room={%roomId%}&peer={%peerId%}
+      */
       const frameSrc = `${frameOrigin}/frame/PAGE-PATH?QUERY-PARAMETERS`;
       const apiKey = "YOUR-REST-API-KEY";
 
